@@ -1,0 +1,10 @@
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over browser:
+browser makes a POST request with the JSON data
+end note
+server-->browser: Statuscode 201 created {"message":"note created"}
+
+note over browser:
+the browser stays on the same page and sends no
+further HTTP request
+end note
