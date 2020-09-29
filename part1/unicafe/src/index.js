@@ -1,19 +1,32 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
+const Button = (props) => {
+  return <button onClick={props.action}>{props.name}</button>;
+};
 const Feedback = (props) => {
   return (
     <div>
       <h1>give feedback</h1>
-      <button onClick={props.giveFeedback.voteGood}>good</button>
-      <button onClick={props.giveFeedback.voteNeutral}>neutral</button>
-      <button onClick={props.giveFeedback.voteBad}>bad</button>
+      <Button action={props.giveFeedback.voteGood} name="good" />
+      <Button action={props.giveFeedback.voteNeutral} name="neutral" />
+      <Button action={props.giveFeedback.voteBad} name="bad" />
     </div>
   );
 };
 
+const Statistic = (props) => {
+  return (
+    <p>
+      {props.text} {props.value}
+    </p>
+  );
+};
 const Statistics = (props) => {
   const { good, neutral, bad } = props.votes;
+  const all = bad + good + neutral;
+  const average = (bad * -1 + good * 1 + neutral * 0) / (bad + good + neutral);
+  const positive = `${(good / (bad + good + neutral)) * 100}%`;
 
   if (good === 0 && neutral === 0 && bad === 0) {
     return (
@@ -27,15 +40,12 @@ const Statistics = (props) => {
     return (
       <div>
         <h1>statistics</h1>
-
-        <p>good {good}</p>
-        <p>neutral {neutral}</p>
-        <p>bad {bad}</p>
-        <p>all {bad + good + neutral}</p>
-        <p>
-          average {(bad * -1 + good * 1 + neutral * 0) / (bad + good + neutral)}
-        </p>
-        <p>positive {(good / (bad + good + neutral)) * 100} %</p>
+        <Statistic text="good" value={good} />
+        <Statistic text="neutral" value={neutral} />
+        <Statistic text="bad" value={bad} />
+        <Statistic text="all" value={all} />
+        <Statistic text="average" value={average} />
+        <Statistic text="positive" value={positive} />
       </div>
     );
   }
