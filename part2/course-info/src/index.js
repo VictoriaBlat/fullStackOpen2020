@@ -1,76 +1,57 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import Course from "./Course";
 
 const App = () => {
-  const course = {
-    id: 1,
-    name: "Half Stack application development",
-    parts: [
-      {
-        name: "Fundamentals of React",
-        exercises: 10,
-        id: 1,
-      },
-      {
-        name: "Using props to pass data",
-        exercises: 7,
-        id: 2,
-      },
-      {
-        name: "State of a component",
-        exercises: 14,
-        id: 3,
-      },
-    ],
-  };
+  const course = [
+    {
+      name: "Half Stack application development",
+      id: 1,
+      parts: [
+        {
+          name: "Fundamentals of React",
+          exercises: 10,
+          id: 1,
+        },
+        {
+          name: "Using props to pass data",
+          exercises: 7,
+          id: 2,
+        },
+        {
+          name: "State of a component",
+          exercises: 14,
+          id: 3,
+        },
+        {
+          name: "Redux",
+          exercises: 11,
+          id: 4,
+        },
+      ],
+    },
+    {
+      name: "Node.js",
+      id: 2,
+      parts: [
+        {
+          name: "Routing",
+          exercises: 3,
+          id: 1,
+        },
+        {
+          name: "Middlewares",
+          exercises: 7,
+          id: 2,
+        },
+      ],
+    },
+  ];
 
-  return (
-    <div>
-      <Course course={course} />
-
-      <Total parts={course.parts} />
-    </div>
-  );
-};
-
-const Course = ({ course }) => {
-  return (
-    <div>
-      <Header course={course.name} />
-      <Content parts={course.parts} />
-    </div>
-  );
-};
-
-const Header = ({ course }) => {
-  return (
-    <>
-      <h1>{course}</h1>
-    </>
-  );
-};
-const Content = ({ parts }) => {
-  return parts.map((part) => <Part key={part.id} info={part} />);
-};
-const Part = ({ info }) => {
-  return (
-    <>
-      <p>
-        {info.name} {info.exercises}
-      </p>
-    </>
-  );
-};
-
-const Total = (props) => {
-  const sum = props.parts.reduce((acc, cv) => {
-    return acc + cv.exercises;
-  }, 0);
-  return (
-    <>
-      <p>Number of exercises {sum}</p>
-    </>
-  );
+  return course.map((el) => {
+    console.log(el.id);
+    return <Course key={el.id} course={el} />;
+  });
 };
 
 ReactDOM.render(
