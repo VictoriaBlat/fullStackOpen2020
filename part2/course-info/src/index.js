@@ -28,7 +28,7 @@ const App = () => {
     <div>
       <Course course={course} />
 
-      {/* <Total parts={course.parts} /> */}
+      <Total parts={course.parts} />
     </div>
   );
 };
@@ -62,18 +62,16 @@ const Part = ({ info }) => {
   );
 };
 
-// const Total = (props) => {
-//   return (
-//     <>
-//       <p>
-//         Number of exercises{" "}
-//         {props.parts[0].exercises +
-//           props.parts[1].exercises +
-//           props.parts[2].exercises}
-//       </p>
-//     </>
-//   );
-// };
+const Total = (props) => {
+  const sum = props.parts.reduce((acc, cv) => {
+    return acc + cv.exercises;
+  }, 0);
+  return (
+    <>
+      <p>Number of exercises {sum}</p>
+    </>
+  );
+};
 
 ReactDOM.render(
   <React.StrictMode>
