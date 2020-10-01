@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
+import Persons from "./Persons";
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-123456" },
@@ -49,16 +50,8 @@ const App = () => {
         newNumber={newNumber}
       />
 
-      <h2>Numbers</h2>
-      {search.map((el) => {
-        return (
-          <div>
-            {el.name}
-            {"  "}
-            {el.number}
-          </div>
-        );
-      })}
+      <h3>Numbers</h3>
+      <Persons search={search} />
     </div>
   );
 };
