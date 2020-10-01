@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "040-123456" },
+    { name: "Ada Lovelace", number: "39-44-5323523" },
+    { name: "Dan Abramov", number: "12-43-234345" },
+    { name: "Mary Poppendieck", number: "39-23-6423122" },
+  ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-
+  const [search, setSearch] = useState(persons);
   const addContact = (event) => {
     event.preventDefault();
 
@@ -14,13 +19,30 @@ const App = () => {
       setPersons(persons.concat({ name: newName, number: newNumber }));
       setNewName("");
       setNewNumber("");
+      setSearch(persons);
     }
+  };
+
+  const filterResults = (event) => {
+    console.log(event.target.value);
+    const result = persons.filter((el) => {
+      console.log(el.name);
+      return el.name.toLowerCase().includes(event.target.value.toLowerCase());
+    });
+
+    setSearch(result);
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
       <form>
+        <div>
+          {" "}
+          filter shown with
+          <input onChange={filterResults} />
+          <div></div>
+        </div>
         <div>
           name:{" "}
           <input
@@ -43,10 +65,12 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((person, id) => {
+      {search.map((el) => {
         return (
-          <div key={id}>
-            {person.name} {person.number}
+          <div>
+            {el.name}
+            {"  "}
+            {el.number}
           </div>
         );
       })}
