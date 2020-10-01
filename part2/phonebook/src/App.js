@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import Filter from "./Filter";
+import PersonForm from "./PersonForm";
 const App = () => {
   const [persons, setPersons] = useState([
     { name: "Arto Hellas", number: "040-123456" },
@@ -10,23 +11,25 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState(persons);
+
+  const addNewName = (event) => setNewName(event.target.value);
+  const addNewNumber = (event) => setNewNumber(event.target.value);
   const addContact = (event) => {
     event.preventDefault();
 
     if (persons.some((person) => person.name === newName)) {
       window.alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons(persons.concat({ name: newName, number: newNumber }));
+      let x = { name: newName, number: newNumber };
+      setPersons(persons.concat(x));
+      setSearch(persons.concat(x));
       setNewName("");
       setNewNumber("");
-      setSearch(persons);
     }
   };
 
   const filterResults = (event) => {
-    console.log(event.target.value);
     const result = persons.filter((el) => {
-      console.log(el.name);
       return el.name.toLowerCase().includes(event.target.value.toLowerCase());
     });
 
@@ -36,34 +39,16 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
-        <div>
-          {" "}
-          filter shown with
-          <input onChange={filterResults} />
-          <div></div>
-        </div>
-        <div>
-          name:{" "}
-          <input
-            value={newName}
-            onChange={(event) => setNewName(event.target.value)}
-          />
-        </div>
-        <div>
-          number:{" "}
-          <input
-            value={newNumber}
-            onChange={(event) => setNewNumber(event.target.value)}
-          />
-        </div>
+      <Filter filterResults={filterResults} />
+      <h3>Add a new</h3>
+      <PersonForm
+        addNewName={addNewName}
+        addContact={addContact}
+        newName={newName}
+        addNewNumber={addNewNumber}
+        newNumber={newNumber}
+      />
 
-        <div>
-          <button onClick={addContact} type="submit">
-            add
-          </button>
-        </div>
-      </form>
       <h2>Numbers</h2>
       {search.map((el) => {
         return (
