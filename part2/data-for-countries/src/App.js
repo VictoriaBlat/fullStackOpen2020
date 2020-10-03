@@ -17,7 +17,7 @@ function App() {
   const handleChange = (event) => {
     setSearch(event.target.value);
     let searchResult = data.filter((el) => {
-      return el.name.includes(search);
+      return el.name.toUpperCase().includes(search.toUpperCase());
     });
     setCountries(searchResult);
   };
@@ -29,8 +29,8 @@ function App() {
       console.log(countries.length, "x.length", countries);
       return countries.map((el) => {
         return (
-          <div>
-            <p key={el.name}>{el.name}</p>
+          <div key={el.name}>
+            <p>{el.name}</p>
             <ToggleCountry info={el} />
           </div>
         );
