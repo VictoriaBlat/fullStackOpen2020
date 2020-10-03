@@ -25,7 +25,7 @@ function App() {
     } else if (countries.length < 10 && countries.length > 1) {
       console.log(countries.length, "x.length", countries);
       return countries.map((el) => {
-        return <p>{el.name}</p>;
+        return <p key={el.name}>{el.name}</p>;
       });
     } else if (countries.length === 1) {
       return (
@@ -37,7 +37,7 @@ function App() {
           <h2>Languages</h2>
           <ul>
             {countries[0].languages.map((lan) => {
-              return <li>{lan.name}</li>;
+              return <li key={lan.name}>{lan.name}</li>;
             })}
           </ul>
           <img
