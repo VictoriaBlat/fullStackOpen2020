@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import axios from "axios";
+import CountryView from "./CountryView";
+import ToggleCountry from "./ToggleCountry";
 
 function App() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [countries, setCountries] = useState([]);
+
   useEffect(() => {
     axios.get("https://restcountries.eu/rest/v2/all").then((res) => {
       setData(res.data);
@@ -25,28 +28,15 @@ function App() {
     } else if (countries.length < 10 && countries.length > 1) {
       console.log(countries.length, "x.length", countries);
       return countries.map((el) => {
-        return <p key={el.name}>{el.name}</p>;
+        return (
+          <div>
+            <p key={el.name}>{el.name}</p>
+            <ToggleCountry info={el} />
+          </div>
+        );
       });
     } else if (countries.length === 1) {
-      return (
-        <div>
-          {" "}
-          <h1>{countries[0].name}</h1>
-          <p> Capital {countries[0].capital}</p>
-          <p> Population {countries[0].population}</p>
-          <h2>Languages</h2>
-          <ul>
-            {countries[0].languages.map((lan) => {
-              return <li key={lan.name}>{lan.name}</li>;
-            })}
-          </ul>
-          <img
-            style={{ width: "100px" }}
-            src={countries[0].flag}
-            alt={`Flag of ${countries[0].name}`}
-          />
-        </div>
-      );
+      return <CountryView info={countries[0]} />;
     } else if (countries.length === 0) {
       return (
         <div>
