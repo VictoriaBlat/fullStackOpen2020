@@ -1,7 +1,8 @@
 import React from "react";
 
 const Persons = (props) => {
-  return props.search.map((el) => {
+  const view = props.search ? props.search : props.data;
+  return view.map((el) => {
     return (
       <div key={el.name}>
         {el.name}
