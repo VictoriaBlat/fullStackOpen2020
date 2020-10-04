@@ -5,7 +5,6 @@ import Persons from "./Persons";
 import phoneService from "./services/phoneService";
 const App = () => {
   const [persons, setPersons] = useState([]);
-
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState();
@@ -24,12 +23,31 @@ const App = () => {
     event.preventDefault();
 
     if (persons.some((person) => person.name === newName)) {
-      window.alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const person = persons.find((person) => person.name === newName);
+        const changedData = { ...person, number: newNumber };
+
+        phoneService.changeNumber(person.id, changedData).then((res) => {
+          const replaceData = persons.map((el) =>
+            el.name === person.name ? res : el
+          );
+          setPersons(replaceData);
+          setSearch(replaceData);
+          setNewName("");
+          setNewNumber("");
+        });
+        console.log("changed!!!");
+      } else console.log("not changed");
+
+      // window.alert(`${newName} is already added to phonebook`);
     } else {
       let newPerson = { name: newName, number: newNumber };
 
       phoneService.create(newPerson).then((res) => {
-        console.log(res);
         setPersons(persons.concat(res));
         setSearch(persons.concat(res));
         setNewName("");
@@ -57,7 +75,6 @@ const App = () => {
         setSearch(newData);
         console.log("deleted", res);
       });
-      console.log("okay!!!");
     } else console.log("nope");
   };
 
