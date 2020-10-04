@@ -8,6 +8,9 @@ const Persons = (props) => {
         {el.name}
         {"  "}
         {el.number}
+        <button onClick={() => props.deleteNumber(el.id, el.name)}>
+          delete
+        </button>
       </div>
     );
   });

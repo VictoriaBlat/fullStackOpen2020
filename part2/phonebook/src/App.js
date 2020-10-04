@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
-import axios from "axios";
+import phoneService from "./services/phoneService";
 const App = () => {
   const [persons, setPersons] = useState([]);
 
@@ -11,10 +11,9 @@ const App = () => {
   const [search, setSearch] = useState();
 
   useEffect(() => {
-    axios.get("http://localhost:3004/persons").then((res) => {
-      console.log(res.data);
-      setPersons(res.data);
-      setSearch(res.data);
+    phoneService.getAll().then((res) => {
+      setPersons(res);
+      setSearch(res);
     });
   }, []);
 
@@ -29,18 +28,13 @@ const App = () => {
     } else {
       let newPerson = { name: newName, number: newNumber };
 
-      axios
-        .post("http://localhost:3004/persons", newPerson)
-        .then((response) => {
-          setPersons(persons.concat(response.data));
-          setSearch(persons.concat(response.data));
-          setNewName("");
-          setNewNumber("");
-        });
-      // setPersons(persons.concat(newPerson));
-      // setSearch(persons.concat(newPerson));
-      // setNewName("");
-      // setNewNumber("");
+      phoneService.create(newPerson).then((res) => {
+        console.log(res);
+        setPersons(persons.concat(res));
+        setSearch(persons.concat(res));
+        setNewName("");
+        setNewNumber("");
+      });
     }
   };
 
@@ -50,6 +44,21 @@ const App = () => {
     });
 
     setSearch(result);
+  };
+
+  const deleteNumber = (id, name) => {
+    if (window.confirm(`Do you really want to delete ${name}?`)) {
+      phoneService.deleteNumber(id).then((res) => {
+        const newData = persons.filter((el) => {
+          return el.id !== id;
+        });
+
+        setPersons(newData);
+        setSearch(newData);
+        console.log("deleted", res);
+      });
+      console.log("okay!!!");
+    } else console.log("nope");
   };
 
   return (
@@ -66,7 +75,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      <Persons search={search} data={persons} />
+      <Persons deleteNumber={deleteNumber} search={search} data={persons} />
     </div>
   );
 };
