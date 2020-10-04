@@ -3,6 +3,7 @@ import "./App.css";
 import axios from "axios";
 import CountryView from "./CountryView";
 import ToggleCountry from "./ToggleCountry";
+import Weather from "./Weather";
 
 function App() {
   const [data, setData] = useState([]);
@@ -14,6 +15,7 @@ function App() {
       setData(res.data);
     });
   }, []);
+
   const handleChange = (event) => {
     setSearch(event.target.value);
     let searchResult = data.filter((el) => {
@@ -36,7 +38,12 @@ function App() {
         );
       });
     } else if (countries.length === 1) {
-      return <CountryView info={countries[0]} />;
+      return (
+        <div>
+          <CountryView info={countries[0]} />
+          <Weather info={countries[0]} />
+        </div>
+      );
     } else if (countries.length === 0) {
       return (
         <div>
