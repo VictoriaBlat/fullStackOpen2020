@@ -11,7 +11,7 @@ const App = () => {
   const [search, setSearch] = useState();
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((res) => {
+    axios.get("http://localhost:3004/persons").then((res) => {
       console.log(res.data);
       setPersons(res.data);
       setSearch(res.data);
@@ -20,17 +20,27 @@ const App = () => {
 
   const addNewName = (event) => setNewName(event.target.value);
   const addNewNumber = (event) => setNewNumber(event.target.value);
+
   const addContact = (event) => {
     event.preventDefault();
 
     if (persons.some((person) => person.name === newName)) {
       window.alert(`${newName} is already added to phonebook`);
     } else {
-      let x = { name: newName, number: newNumber };
-      setPersons(persons.concat(x));
-      setSearch(persons.concat(x));
-      setNewName("");
-      setNewNumber("");
+      let newPerson = { name: newName, number: newNumber };
+
+      axios
+        .post("http://localhost:3004/persons", newPerson)
+        .then((response) => {
+          setPersons(persons.concat(response.data));
+          setSearch(persons.concat(response.data));
+          setNewName("");
+          setNewNumber("");
+        });
+      // setPersons(persons.concat(newPerson));
+      // setSearch(persons.concat(newPerson));
+      // setNewName("");
+      // setNewNumber("");
     }
   };
 
