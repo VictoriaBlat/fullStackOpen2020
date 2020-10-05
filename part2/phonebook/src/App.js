@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Filter from "./Filter";
-import PersonForm from "./PersonForm";
-import Persons from "./Persons";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 import phoneService from "./services/phoneService";
+import Notification from "./components/Notification";
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState();
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     phoneService.getAll().then((res) => {
@@ -35,10 +37,17 @@ const App = () => {
           const replaceData = persons.map((el) =>
             el.name === person.name ? res : el
           );
+
           setPersons(replaceData);
           setSearch(replaceData);
           setNewName("");
           setNewNumber("");
+          setNotification(
+            `The number of '${changedData.name}' was successfully changed`
+          );
+          setTimeout(() => {
+            setNotification(null);
+          }, 5000);
         });
         console.log("changed!!!");
       } else console.log("not changed");
@@ -52,6 +61,10 @@ const App = () => {
         setSearch(persons.concat(res));
         setNewName("");
         setNewNumber("");
+        setNotification(`Number '${newPerson.name}' was successfully added`);
+        setTimeout(() => {
+          setNotification(null);
+        }, 5000);
       });
     }
   };
@@ -81,6 +94,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <Filter filterResults={filterResults} />
       <h3>Add a new</h3>
       <PersonForm
